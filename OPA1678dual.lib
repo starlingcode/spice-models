@@ -1,0 +1,7 @@
+* A dual opamp ngspice model
+* file name: OPA1678dual.lib
+.subckt OPA1678dual 1out 1in- 1in+ vcc- 2in+ 2in- 2out vcc+
+.include OPA1678.LIB
+XU1A 1in+ 1in- vcc+ vcc- 1out OPA1678
+XU1B 2in+ 2in- vcc+ vcc- 2out OPA1678
+.ends

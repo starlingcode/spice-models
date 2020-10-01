@@ -1,0 +1,12 @@
+**************** Discrete Diode Electrical Parameter ****************
+* Product: MB2S
+* Package: SOIC-4
+* Bridge Rectifier 
+* -------------------------------------------------------------------
+.MODEL MB2S D
++ IS=1.9568e-9	 N=2.0	         RS=0.07564	  NR=2.0
++ ISR=1.5e-7      CJO=2.4285e-11	 M=0.33            VJ=0.75	
++ BV=220          IBV=1.0e-4	 TT=1.0099e-08     EG=1.21
+* -------------------------------------------------------------------
+* Creation: May-26-2009   Rev: 0.0
+* Fairchild Semiconductor
