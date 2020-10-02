@@ -1,0 +1,9 @@
+* A dual opamp ngspice model
+* file name: OPA4171.lib
+.subckt OPA4171 1 2 3 4 5 6 7 8 9 10 11 12 13 14
+.include OPA171.LIB
+XA 3 2 4 11 1 OPA171
+XB 5 6 4 11 7 OPA171
+XC 10 9 4 11 8 OPA171
+XD 12 13 4 11 14 OPA171
+.ends
