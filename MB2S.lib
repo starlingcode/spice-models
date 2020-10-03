@@ -3,10 +3,16 @@
 * Package: SOIC-4
 * Bridge Rectifier 
 * -------------------------------------------------------------------
-.MODEL MB2S D
-+ IS=1.9568e-9	 N=2.0	         RS=0.07564	  NR=2.0
-+ ISR=1.5e-7      CJO=2.4285e-11	 M=0.33            VJ=0.75	
-+ BV=220          IBV=1.0e-4	 TT=1.0099e-08     EG=1.21
+.MODEL MB2SD D
++ n = 2.15337 is = 8.70529E-008 rs = 0.0464093 eg = 1.02043 xti = 3.0254
++ cjo = 2.36617E-011 vj = 0.866392 m = 0.324665 fc = 0.5 tt = 2.88539E-006 bv = 600
++ ibv = 0.0022 kf = 0 af = 1 t_measured = 27
 * -------------------------------------------------------------------
 * Creation: May-26-2009   Rev: 0.0
 * Fairchild Semiconductor
+.subckt MB2S 1 2 3 4
+D1 1 3 MB2SD
+D2 4 1 MB2SD
+D3 4 2 MB2SD
+D4 2 3 MB2SD
+.ends

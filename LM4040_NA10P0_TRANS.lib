@@ -32,7 +32,8 @@
 * Release to Web.
 *
 ******************************************************************************
-.SUBCKT LM4040_NA10P0  V+ V- PARAMS: TOL=0
+.func if(a,b,c) = {ternary_fcn( a , b , c )}
+.SUBCKT LM4040_NA10P0  V+ V- PARAMS: TOL=.001
 C_Cstart         V- START  400nF  TC=0,0 
 Q_Q22         N03098 N01931 V- NPN1X 
 Q_Q7         N02184 VC_Q2 N01786 NPN1X 
@@ -82,7 +83,7 @@ R_Rstart1         Q20B START  20K TC=0,0
 R_R17         N08116 N08107  130k TC=0,0 
 R_R7         VB_Q3 VB_Q2  10K TC=0,0 
 C_C1         VC_Q2 N03098  3pF  TC=0,0 
-R_R19       V+ FB_TEMP {IF({TOL}==0,111529.8505,IF({TOL}>0,111504.701,111555))} 
+R_R19       V+ FB_TEMP 111504.701
 R_R20       FB_TEMP V-  800K
 .model NPN1X	NPN Is=13.84e-18 Bf=130 TR=8ns
 .model PNPV1X	PNP Is=261.8e-18 Bf=222

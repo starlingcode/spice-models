@@ -1,0 +1,4 @@
+.subckt SPST 1 2 3
+S1 1 2 3 0 SWITCH
+.model SWITCH SW (RON=0.1 ROFF=1e9 VT=3.33 VH=0)
+.ends

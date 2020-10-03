@@ -1,0 +1,5 @@
+.subckt BC846D 1 2 3 4 5 6
+.include BC846.lib
+X1 6 2 1 BC846
+X2 3 5 4 BC846
+.endsaa
