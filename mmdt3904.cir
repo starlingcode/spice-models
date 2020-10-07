@@ -1,0 +1,5 @@
+.subckt MMDT3904 1 2 3 4 5 6
+.include Q2N3904.lib
+Q1 6 2 1 Q2N3904
+Q2 3 5 4 Q2N3904
+.ends
