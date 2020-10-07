@@ -1,0 +1,224 @@
+* PSpice Model Editor - Version 17.2.0
+*$
+* LM393B
+*****************************************************************************
+* (C) Copyright 2019 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: LM393B
+* Date: 11/08/2019
+* Model Type: All In One
+* Simulator: PSPICE 
+* Simulator Version: 17.2.0.p001
+* EVM Order Number: N/A 
+* EVM Users Guide:  N/A 
+* Datasheet: SLCS005AA - September 2019
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web
+*         2.0 : Improving Convergence
+*
+*****************************************************************************
+* Notes:
+* The following parameters are modeled: 
+* Iq, tpd, Ibias, Vcm, Vs
+*
+*****************************************************************************
+.SUBCKT LM393B_SINGLE IN+ IN- OUT V+ V-  
+X_U1 IN+ IN- OUT V+ V- Top_Level_Schematic  
+.ENDS
+ 
+.SUBCKT Top_Level_Schematic IN+ IN- V+ V- VOUT  
+X_U3 N00538 V+_BUFFER V-_BUFFER Supply_Enable  
+X_U9         V+ V- V+_BUFFER V-_BUFFER SUPPLY_BUFFER1
+I_I3         0 IN- DC 15n  
+I_I1         V+ 0 DC 200u  
+X_U1 IN-_BUFFER N00631 IN+_BUFFER N00624 V+_BUFFER V-_BUFFER VINRANGE_ABOVE_1  
+X_U12 IN-_BUFFER IN+_BUFFER V+_BUFFER V-_BUFFER N00575 VINRANGE_BELOW_1  
+V_V5         DLS1+ 0 1
+X_U10 DLS1+ 0 N00631 N00624 V+_BUFFER V-_BUFFER N00571 Comparator_Logic_1  
+X_U6 DLS1+ 0 N00571 N00575 N01677 Prop_Delay_1  
+X_U11 DLS1+ 0 N00538 V- N01677 VOUT Open_Drain_Output_1  
+I_I2         0 IN+ DC 15n  
+X_U13         IN+ IN- IN+_BUFFER IN-_BUFFER SUPPLY_BUFFER1
+.ENDS
+ 
+.SUBCKT Open_Drain_Output_1 DLS1+ DLS1- EN V-_BUFFER VIN1 VOUT1  
+X_U2         EN VIN1 N24852 DLS1+ DLS1- ENABLE_LOGIC
+X_U3         N24852 N24864 DLS1+ DLS1- INVERTER
+X_U4         N24864 N26327 DLS1+ DLS1- DLS1+ V-_BUFFER DIGLEVSHIFT
+Q_Q1         VOUT1 N26327 V-_BUFFER NPN1 
+.ENDS
+ 
+.SUBCKT Prop_Delay_1 V+_BUFFER V-_BUFFER VIN1 VIN_INVERT1 VOUT1  
+R_R1         0 N01630  50 TC=0,0 
+X_U1         VIN_INVERT1 N01630 VOUT1 V+_BUFFER V-_BUFFER HPA_INV
+T_T1         VIN1 0 N01630 0 Z0=50 TD=1.3u  
+.ENDS
+ 
+.SUBCKT Comparator_Logic_1 DLS1+ DLS1- INN1 INP1 V+_BUFFER V-_BUFFER VOUT1  
+V_V2         N011110 0 0
+X_U1         N00742 VOUT1 V+_BUFFER V-_BUFFER DLS1+ DLS1- DIGLEVSHIFT
+X_U3         INP1 INN1 N00742 V+_BUFFER V-_BUFFER N011110 HPA_COMPHYS
+.ENDS
+ 
+.SUBCKT VINRANGE_BELOW_1 INN INP V+_BUFFER V-_BUFFER VIN_INVERT  
+X_U1         N03325 INP N03337 V+_BUFFER V-_BUFFER VINRANGE_393
+X_U2         N03545 INN N03439 V+_BUFFER V-_BUFFER VINRANGE_393
+X_U3         N03337 N03439 VIN_INVERT V+_BUFFER V-_BUFFER ORGATE
+V_V2         V-_BUFFER N03325 .3
+V_V1         V-_BUFFER N03545 .3
+.ENDS
+ 
+.SUBCKT VINRANGE_ABOVE_1 INN1 INNNEW1 INP1 INPNEW1 V+_BUFFER V-_BUFFER  
+X_U4         N04430 INP1 INPNEW1 V+_BUFFER V-_BUFFER CMPOS
+X_U8         N04464 N04600 N04430 V+_BUFFER V-_BUFFER ANDGATE_LOGIC
+V_V1         V+_BUFFER N04794 1.5
+X_U2         INN1 N04794 N04600 V+_BUFFER V-_BUFFER VINRANGE_393
+V_V2         V+_BUFFER N04508 1.5
+X_U1         INP1 N04508 N04464 V+_BUFFER V-_BUFFER VINRANGE_393
+X_U7         N04430 INN1 INNNEW1 V+_BUFFER V-_BUFFER CMPOS_INN
+.ENDS
+ 
+.SUBCKT Supply_Enable EN V+_BUFFER V-_BUFFER  
+X_U13         V+_BUFFER V-_BUFFER N11294 V+_BUFFER V-_BUFFER DIFFERENCE
+V_V1         N11220 0 36
+X_U14         N11220 N11272 N11294 EN V+_BUFFER V-_BUFFER SUPPLYENABLE
+V_V4         N11272 0 3
+.ENDS
+
+.SUBCKT ANDGATE3_LOGIC 1 2 3 OUT VDD VSS
+EOUT OUT 0 VALUE = { IF( ((V(1)> (V(VDD)+V(VSS))/2 ) & (V(2)> (V(VDD)+V(VSS))/2 ) & (V(3)> (V(VDD)+V(VSS))/2)), V(VDD), V(VSS) ) }
+C1 OUT 0 1e-12
+.ENDS
+
+
+.SUBCKT ANDGATE_LOGIC 1 2 3 VDD VSS
+E1 4 0 VALUE = { IF( ((V(1)> (V(VDD)+V(VSS))/2 ) & (V(2)> (V(VDD)+V(VSS))/2 )), V(VDD), V(VSS) ) }
+R1 4 3 1
+C1 3 0 1e-12
+.ENDS
+
+.SUBCKT CMPOS 1 2 OUT VDD VSS 
+EVMID VMID 0 VALUE = { ( V(VDD) + V(VSS) )/2 }
+EOUT OUT 0 VALUE = { IF( ( V(1) > V(VMID) ), V(VSS), V(2) ) }
+R1 OUT 2 1
+C1 2 0 1e-12
+.ENDS
+
+.SUBCKT CMPOS_INN 1 2 OUT VDD VSS 
+EVMID VMID 0 VALUE = { ( V(VDD) + V(VSS) )/2 }
+EOUT OUT 0 VALUE = { IF( ( V(1) > V(VMID) ), V(VDD), V(2) ) }
+R1 OUT 2 1
+C1 2 0 1e-12
+.ENDS
+
+.SUBCKT HPA_COMPHYS INP INN OUT_OUT VDD VSS VHYS
+EVMID VMID 0 VALUE = { ( V(VDD) + V(VSS) )/2 }
+EINPNEW INPNEW 0 VALUE = { IF( ( V(OUT) < V(VMID) ), V(INP),( V(INP) + V(VHYS) ) ) }
+EOUT OUT 0 VALUE = { IF( ( V(INPNEW) > V(INN) ), V(VDD), V(VSS) ) }
+R1 OUT OUT_OUT 1
+C1 OUT_OUT 0 1e-12
+.ENDS
+
+.SUBCKT DIGLEVSHIFT 1 2 VDD_OLD VSS_OLD VDD_NEW VSS_NEW
+E1 3 0 VALUE = { IF( V(1) < (V(VDD_OLD)+V(VSS_OLD))/2, V(VSS_NEW), V(VDD_NEW) ) }
+R1 3 2 1
+C1 2 0 1e-12
+.ENDS
+
+
+.SUBCKT ENABLE_LOGIC 1 2 OUT VDD VSS 
+EVMID VMID 0 VALUE = { ( V(VDD) + V(VSS) )/2 }
+EOUT OUT 0 VALUE = { IF( ( V(1) > V(VMID) ), V(2), V(VSS) ) }
+R1 OUT 2 1
+C1 2 0 1e-12
+.ENDS
+
+
+.SUBCKT IBias_AND 1 2 3 OUT VDD VSS
+EOUT OUT 0 VALUE = { IF( (V(1) & V(2)) >= (V(3)), VSS, VDD)}
+C1 OUT 0 1e-12
+.ENDS
+
+.SUBCKT IBias_OR 1 2 3 OUT VDD VSS
+EOUT OUT 0 VALUE = { IF( (V(1) & V(2)) >= (V(3)), VDD, VSS)}
+C1 OUT 0 1e-12
+.ENDS
+
+
+.SUBCKT VIN_INV 1 2 VDD VSS
+E2 2 0 VALUE = { IF( V(1)> (V(VDD)+V(VSS))/2, V(VSS), V(VDD) ) }
+C1 2 0 1e-12
+.ENDS
+
+.SUBCKT INVERTER 1 2 VDD VSS
+E2 2 0 VALUE = { IF( V(1)> (V(VDD)+V(VSS))/2, V(VSS), V(VDD) ) }
+C1 1 0 1e-12
+.ENDS
+
+
+.SUBCKT SupplyEnable 1 2 3 OUT VDD VSS 
+EOUT OUT 0 VALUE = { IF( ((V(3) >= V(2) ) & (V(3) <= V(1))), V(VDD), V(VSS) ) }
+R1 OUT 2 1
+C1 2 0 1e-12
+.ENDS
+
+.SUBCKT ORGATE 1 2 3 VDD VSS
+E1 4 0 VALUE = { IF( ((V(1)< (V(VDD)+V(VSS))/2 ) & (V(2)< (V(VDD)+V(VSS))/2 )), V(VSS), V(VDD) ) }
+R1 4 3 1
+C1 3 0 1e-12
+.ENDS
+
+.SUBCKT Difference 1 2 OUT VDD VSS 
+EOUT OUT 0 VALUE = { V(1)- V(2)}
+R1 OUT 2 1
+C1 2 0 1e-12
+.ENDS
+
+.SUBCKT SUPPLY_BUFFER1 1 2 VDD_NEW VSS_NEW 
+EVDD_NEW VDD_NEW 0 VALUE = {V(1)}
+EVSS_NEW VSS_NEW 0 VALUE = {V(2)}
+C1 2 0 1e-12
+.ENDS
+
+.SUBCKT VCC_Range 1 2 OUT VDD VSS 
+EOUT OUT 0 VALUE = { IF( ( V(1) >= V(2) ), V(VDD), V(VSS) ) }
+R1 OUT 2 1
+C1 2 0 1e-12
+.ENDS
+
+.SUBCKT VINRANGE_393 1 2 OUT VDD VSS 
+EOUT OUT 0 VALUE = { IF( ( V(1) > V(2) ), V(VDD), V(VSS) ) }
+R1 OUT 2 1
+C1 2 0 1e-12
+.ENDS
+
+.SUBCKT HPA_INV 1 2 OUT VDD VSS
+EVMID VMID 0 VALUE = { ( V(VDD) + V(VSS) )/2 }
+EOUT OUT 0 VALUE = { IF((V(1) < V(VMID)),V(2), IF( ((V(2) > V(VMID)) & (V(1) > V(VMID))), V(VSS), V(VDD)))}
+C1 2 0 1e-12
+.ENDS
+
+.MODEL NPN1 NPN LEVEL=1 IS=1E-16 RB=850 RC=10 TF=50n
+
+.MODEL PNP1 PNP LEVEL=1 IS=1E-16 RB=25 RC=35 TF=105n
+*$
