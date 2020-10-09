@@ -1,7 +1,8 @@
 .subckt SPDT 1 2 3
-R1 1 2 {value*ratio + 1m}
-R2 2 3 {value*(1-ratio)+ 1m}
-* below are default parameters, which are required by some simulators
-.param value=100M
-.param ratio=1
+E1 sw1 0 vol = '5.0 - position'
+E2 sw2 0 vol = 'position'
+S1 1 2 sw1 0 DGSWITCH
+S2 2 3 sw2 0 DGSWITCH
+.model DGSWITCH SW (VT=3 VH=0 RON=30 ROFF=1e6)
+.param position=0
 .ends
