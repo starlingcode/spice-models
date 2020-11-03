@@ -1,0 +1,3 @@
+.subckt EURO_OUT 1 2
+R1 1 2 100k
+.ends

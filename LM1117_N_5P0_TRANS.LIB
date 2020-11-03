@@ -1,0 +1,117 @@
+* PSpice Model Editor - Version 16.2.0
+*$
+* LM1117_N_5P0
+*****************************************************************************
+* (C) Copyright 2015 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: LM1117_N_5P0
+* Date: 17MAR2015 
+* Model Type: Transient
+* Simulator: PSpice
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: 
+* EVM User's Guide: 
+* Data sheet: SNOS412M –FEBRUARY 2000–REVISED MARCH 2013
+*
+* Model Version: Final 1.1
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*
+*****************************************************************************
+.SUBCKT LM1117_N_5P0_TRANS IN OUT GND_0
+
+.PARAM  psrr=177.83u uvlo=0 ilim=1.2 pole=2k rinp=1e7 zero=300k rout=1m
++  ttrn=180u ehys=0.11 vref=1.25 uhys=0.1 drop=350m
+
+R_R6         N242982 VYY  5 TC=0,0 
+C_U1_C2         0 U1_N05382  1n  
+E_U1_ABM4         U1_N09035 0 VALUE { V(U1_N05348)*
++  (ABS(V(VZZ))/(ABS(V(VZZ)-v(N222934))))    }
+C_U1_C1         0 U1_N05348  {1e-6*SQRT(TTRN)} IC=0 
+R_U1_R1         0 U1_N05348  1G  
+X_U1_U2         IN U1_N352510 U1_N3524503 VIN_OK COMPHYS_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=0.5
+E_U1_E1         U1_DROP 0 TABLE { V(LOAD, 0) } 
++ ( (0,1) (100m, 1.1)(500m,1.14)(800m, 1.18) )
+V_U1_V3         U1_N3524503 0 {UHYS}
+R_U1_R5         U1_N09745 N222524  5 TC=0,0 
+V_U1_V4         U1_N352510 0 {UVLO}
+R_U1_R3         U1_N08164 U1_N05348  {3.333e5*SQRT(TTRN)} TC=0,0 
+C_U1_C3         0 N222524  1n  
+R_U1_R2         0 U1_N05382  1G  
+E_U1_ABM6         U1_N08164 0 VALUE { IF(V(VIN_OK)> 0.6, {VREF}, 0)    }
+E_U1_ABM5         U1_N09745 0 VALUE { MIN(V(U1_N05382),  
++ MAX(V(IN) -V(U1_DROP), 0))   }
+R_U1_R4         U1_N09035 U1_N05382  5 TC=0,0 
+X_F1    N359447 VZZ N222604 VYY LM1117_N_5P0_F1 
+C_C3         0 VYY  1n  
+X_S3    N428572 0 IN N222604 LM1117_N_5P0_S3 
+R_R5         N359447 VYY  {ROUT}  
+C_C7         0 N222604  25n  
+E_ABM1         N242982 0 VALUE { {MIN(V(VXX), (V(Vzz)+(ILIM*ROUT)))}    }
+R_R9         VIN_OK N428572  5 TC=0,0 
+R_R1         VXX N222604  {RINP}       
+R_R200         0 N222934  300k  
+R_R2         N222524 VXX  {PSRR*RINP}  
+C_C6         0 N428572  1u  
+R_R100         N222934 OUT  99.8k  
+C_C1         VXX N222604  {1/(6.28*RINP*POLE)}  
+E_ABM2         LOAD 0 VALUE { I(V_Vload)    }
+C_C2         VXX N222524  {1/(6.28*PSRR*RINP*ZERO)}  
+V_Vload         VZZ OUT 0Vdc
+X_U2         0 OUT D_D
+
+
+
+
+.ENDS LM1117_N_5P0_TRANS
+*$
+****************************
+.subckt LM1117_N_5P0_F1 1 2 3 4  
+F_F1         3 4 VF_F1 1
+VF_F1         1 2 0V
+.ends LM1117_N_5P0_F1
+*$
+.subckt LM1117_N_5P0_S3 1 2 3 4  
+S_S3         3 4 1 2 _S3
+RS_S3         1 2 1G
+.MODEL         _S3 VSWITCH Roff=10k Ron=180 Voff=0.1 Von=0.9
+.ends LM1117_N_5P0_S3
+
+*$
+.SUBCKT COMPHYS_BASIC_GEN INP INM HYS OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1) > {VTHRESH},-V(HYS),0) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1), {VDD} ,{VSS}) }
+R1 OUT 1 1
+C1 1 0 5n
+RINP1 INP1 0 1K
+.ENDS COMPHYS_BASIC_GEN
+*$
+.SUBCKT D_D1 1 2
+D1 1 2 DD1
+.MODEL DD1 D( IS=1e-15 TT=10p Rs=0.05 N=.1  )
+.ENDS D_D1
+*$
+.subckt d_d 1 2
+d1 1 2 dd
+.model dd d
++ is=1e-015
++ n=0.01
++ tt=1e-011
+.ends d_d
+*$
