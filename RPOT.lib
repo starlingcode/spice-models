@@ -5,3 +5,11 @@ R2 2 3 {value*(1-ratio)+ 1m}
 .param value=100k
 .param ratio=.5
 .ends
+
+.subckt RPOT_5K 1 2 3
+R1 1 2 {value*ratio + 1m}
+R2 2 3 {value*(1-ratio)+ 1m}
+* below are default parameters, which are required by some simulators
+.param value=5k
+.param ratio=.5
+.ends

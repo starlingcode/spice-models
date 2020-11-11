@@ -1,0 +1,272 @@
+* The models here are just modifications from a general 7905 model.
+* I only changed one resistor to achieve the desired output voltage.
+* I don't know about the quality of the original model. H.S.
+*
+* Add the end of this file is the original uploaded LM7905 model from 
+* "regulators.lib" uploaded by "renan_poa". It delivers -5.32V.
+* I renamed this LM7905 to LM7905X to avoid equal model names in this file.
+*
+*
+* This is a copy of the LM7905 from regulators.lib.
+* R10 changed from 1k to 10  
+*
+.SUBCKT LM7905  1    2    3            
+DD4           4   5   D_6V3_0 
+DD2           6   2   D_3V9_0 
+DD1           7   2   D_4V7_0 
+DD3           8   3   D_6V3_0 
+C2            9  10  5P
+C1            2   9  15P
+QTU15         10   9   3   Q_PNP_0 1.000
+R17          11  12  4.2K
+QTU22          3  10  13   Q_NPN_0 3.000
+R18           8   5  15.65K
+R20          13  14  1K
+R19           4  14  75
+QTU31         12  11   4   Q_NPN_1 1.000
+R16          15   1  160
+R24          16   1  1.8K
+C3           17   1  10P
+QTU30         18  12  15   Q_NPN_1 1.000
+QTU29         10  16   1   Q_NPN_1 1.000
+R15          19   1  400
+QTU28         10  20  19   Q_NPN_1 1.000
+R14          21   1  200
+QTU27         17  20  21   Q_NPN_1 1.000
+R11          22  23  1K
+R10          24  25  10
+QTU19         18  27  26   Q_NPN_1 1.000
+R9            2  18  7.1K
+QTU8          16  18   2   Q_PNP_0 1.000
+QTU7          28  18   2   Q_PNP_0 1.000
+QTU6          18  18   2   Q_PNP_0 1.000
+QTU5          11  29   2   Q_PNP_0 1.000
+QTU4          20  29   2   Q_PNP_0 1.000
+QTU3           1  29   2   Q_PNP_0 1.000
+QTU2           1  29   2   Q_PNP_0 1.000
+R13          28   1  400
+R12          30   1  400
+QTU18         29  29  31   Q_NPN_1 1.000
+QTU1          29  29   2   Q_PNP_0 1.000
+R6           31  32  6.5K
+R7           32  27  5.6K
+R8           27  26  950
+QTU10         33   6  26   Q_PNP_0 1.000
+QTU17         34  35  33   Q_PNP_0 1.000
+R5           36   1  2K
+QTU24         34  34  36   Q_NPN_1 1.000
+R1           37   6  6.3K
+R2           37  38  670
+R3           38  35  550
+QTU9          38  35   6   Q_PNP_0 1.000
+R4           39   1  2K
+QTU23         35  34  39   Q_NPN_1 1.000
+QTU16          1   7  35   Q_PNP_0 1.000
+JT1           7   1   1  J_2N3458_N 
+QTU14          3  17  23   Q_PNP_0 1.000
+QTU13         17  17  23   Q_PNP_0 1.000
+QTU12         17  17  25   Q_PNP_0 1.000
+QTU11          9  17  25   Q_PNP_0 1.000
+QTU32          3  13  14   Q_NPN_2 10.000
+QTU26          9  20  28   Q_NPN_1 1.000
+QTU25         20  20  30   Q_NPN_1 1.000
+QTU21          2  40  22   Q_NPN_1 1.000
+QTU20          2  37  24   Q_NPN_1 1.000
+R21           2  40  4.29K
+R22          40   3  500
+R23          14   1  500M
+
+.MODEL J_2N3458_N NJF( VTO=-3.05 BETA=699.53U LAMBDA=6M RD=1 RS=1 
++      CGD=2.81P CGS=2.91P M=227.1M PB=500M IS=114.41F 
++      VTOTC=-2.5M BETATCE=-500M KF=0 AF=1 )
+.MODEL D_6V3_0  D( IS=10F N=1.24 BV=6.3 IBV=1M CJ0 = 1P TT = 10p )
+.MODEL D_3V9_0  D( IS=10F N=1.24 BV=3.9 IBV=1M CJ0 = 1P TT = 10p )
+.MODEL D_4V7_0  D( IS=10F N=1.24 BV=4.7 IBV=1M CJ0 = 1P TT = 10p )
+.MODEL Q_PNP_0  PNP( IS=10F NF=1.04 NR=1.04 BF=50 CJC=1P CJE=2P
++      TF=10P TR=1N VAF=45)
+.MODEL Q_NPN_0  NPN( IS=10F NF=1.04 NR=1.04 BF=100 CJC=1P CJE=2P
++       TF=10P TR=1N VAF=90)
+.MODEL Q_NPN_1  NPN( IS=10F NF=1.04 NR=1.04 BF=100 CJC=1P CJE=2P
++       TF=10P TR=1N VAF=90)
+.MODEL Q_NPN_2  NPN( IS=10F NF=1.04 NR=1.04 BF=100 CJC=1P CJE=2P
++       TF=10P TR=1N VAF=90)
+.ENDS LM7905
+
+
+
+
+.SUBCKT LM79XX Input Output Ground PARAMS:
++       Av_feedback=1660, R1_Value=4615,
++       Rbg_Tc1=8.13E-5, Rbg_Tc2=0.0,
++       Rout_Value=0.01, Rreg_Value=9.1k ;1.2k
+*
+* SERIES 3-TERMINAL NEGATIVE REGULATOR
+*
+* Note: This regulator is based on the LM79XX series of
+*       regulators (also the LM120 and LM320).  The
+*       LM79XX regulators are unstable and will
+*       oscillate unless a 1 uFarad solid tantalum
+*       capacitor is placed on the output with an ESR
+*       betweed .5 and 1.5.  This model is stable without
+*       a capacitor on the output.  When performing
+*       simulations a 1 uFarad capacitor should still be
+*       placed on the output.  However, it it not necessary
+*       to include a resistor in series with this capacitor
+*       to model the ESR of the capacitor.  See the
+*       comments and circuit description of the x_LM78XX
+*       regulator for more information on this model.
+*
+* Band-gap voltage source:
+*
+Vbg 100 0 DC -7.4V
+Sbg 100 101 Ground Input  Sbg1
+Rbg 101 0 Rbg1 1
+.MODEL Rbg1 RES (Tc1={Rbg_Tc1},Tc2={Rbg_Tc2})
+Ebg 102 0 Input Ground  1
+Rreg 102 101 {Rreg_Value}
+.MODEL Sbg1 VSWITCH (Ron=1 Roff=1MEG Von=3.7 Voff=3)
+*
+* Feedback stage
+*
+Rfb 9 8 1MEG
+Cfb 8 Ground 265PF
+* Eopamp 105 0 VALUE={2250*v(101,0)+Av_feedback*v(Ground,8)}
+Vgainf 200 0 {Av_feedback}
+Rgainf 200 0 1
+Eopamp 105 0 POLY(3),(101,0),(Ground,8),(200,0) 0 2250 0 0 0 0 0 0 1
+Ro 105 106 1k
+D1 108 106 Dlim
+D2 106 107 Dlim
+.MODEL Dlim D (Vj=0.7)
+Vl1 108 102 DC 1
+Vl2 0 107 DC 1
+*
+* Quiescent current modelling
+*
+Gq (Ground,Input),(9,Input) 9.0E-7
+R1 9 Ground {R1_Value} TC=0.001
+Fl (Ground,0) Vmon 3.0E-4
+*
+* Output Stage
+*
+Q1 9 5 6 Npn1
+Q2 9 6 7 Npn1 10
+.MODEL Npn1 NPN (Bf=50 Is=1E-14)
+* Efb 4 Ground VALUE={v(Input,Ground)+v(0,106)}
+Efb 4 Ground POLY(2)  (Input,Ground) (0,106) 0 1 1
+Rb 4 5 1k TC=0.003
+Re 6 7 2k
+Rsc 7 Input 0.13 TC=1.136E-3,-7.806E-6
+Rout 9 Imon {Rout_Value}
+Vmon Imon Output DC 0.0
+*
+* Current Limit
+*
+Qcl1 54 52 53 Npn1
+Qcl3 Input 54 5 Pnp1
+.MODEL Pnp1 PNP (Bf=250 Is=1E-14)
+Rcl3 5 54 1.8k
+Qcl2 52 52 51 Npn1
+Veset 53 Input DC 0.3v
+Ibias Input 52 DC 300u
+Rcl1 50 51 20k
+Rcl2 51 7 115
+Dz1 50 9 Dz
+.MODEL Dz D (Is=0.05p Rs=3 Bv=7.11 Ibv=0.05u)
+.ENDS
+
+
+.SUBCKT LM7912  INPUT  GROUND OUTPUT
+x1 Input Output Ground  LM79XX PARAMS:
++     Av_feedback=694, R1_Value=11076,
++     Rbg_Tc1=-9.50E-7, Rbg_Tc2=-6.53E-7,
++     Rout_Value=0.01, Rreg_Value=9.1k
+.ENDS
+
+* This is a copy of the LM7905 from regulators.lib.
+* R22 changed from 500 -> 10.63k
+*
+.SUBCKT LM7915  1    2    3            
+
+DD4           4   5   D_6V3_0 
+DD2           6   2   D_3V9_0 
+DD1           7   2   D_4V7_0 
+DD3           8   3   D_6V3_0 
+C2            9  10  5P
+C1            2   9  15P
+QTU15         10   9   3   Q_PNP_0 1.000
+R17          11  12  4.2K
+QTU22          3  10  13   Q_NPN_0 3.000
+R18           8   5  15.65K
+R20          13  14  1K
+R19           4  14  75
+QTU31         12  11   4   Q_NPN_1 1.000
+R16          15   1  160
+R24          16   1  1.8k
+C3           17   1  10P
+QTU30         18  12  15   Q_NPN_1 1.000
+QTU29         10  16   1   Q_NPN_1 1.000
+R15          19   1  400
+QTU28         10  20  19   Q_NPN_1 1.000
+R14          21   1  200
+QTU27         17  20  21   Q_NPN_1 1.000
+R11          22  23  1K
+R10          24  25  1K
+QTU19         18  27  26   Q_NPN_1 1.000
+R9            2  18  7.1K
+QTU8          16  18   2   Q_PNP_0 1.000
+QTU7          28  18   2   Q_PNP_0 1.000
+QTU6          18  18   2   Q_PNP_0 1.000
+QTU5          11  29   2   Q_PNP_0 1.000
+QTU4          20  29   2   Q_PNP_0 1.000
+QTU3           1  29   2   Q_PNP_0 1.000
+QTU2           1  29   2   Q_PNP_0 1.000
+R13          28   1  400
+R12          30   1  400
+QTU18         29  29  31   Q_NPN_1 1.000
+QTU1          29  29   2   Q_PNP_0 1.000
+R6           31  32  6.5K
+R7           32  27  5.6K
+R8           27  26  950
+QTU10         33   6  26   Q_PNP_0 1.000
+QTU17         34  35  33   Q_PNP_0 1.000
+R5           36   1  2K
+QTU24         34  34  36   Q_NPN_1 1.000
+R1           37   6  6.3K
+R2           37  38  670
+R3           38  35  550
+QTU9          38  35   6   Q_PNP_0 1.000
+R4           39   1  2K
+QTU23         35  34  39   Q_NPN_1 1.000
+QTU16          1   7  35   Q_PNP_0 1.000
+JT1           7   1   1  J_2N3458_N 
+QTU14          3  17  23   Q_PNP_0 1.000
+QTU13         17  17  23   Q_PNP_0 1.000
+QTU12         17  17  25   Q_PNP_0 1.000
+QTU11          9  17  25   Q_PNP_0 1.000
+QTU32          3  13  14   Q_NPN_2 10.000
+QTU26          9  20  28   Q_NPN_1 1.000
+QTU25         20  20  30   Q_NPN_1 1.000
+QTU21          2  40  22   Q_NPN_1 1.000
+QTU20          2  37  24   Q_NPN_1 1.000
+R21           2  40  4.29K
+R22          40   3  10.66K
+R23          14   1  500M
+
+.MODEL J_2N3458_N NJF( VTO=-3.05 BETA=699.53U LAMBDA=6M RD=1 RS=1 
++      CGD=2.81P CGS=2.91P M=227.1M PB=500M IS=114.41F 
++      VTOTC=-2.5M BETATCE=-500M KF=0 AF=1 )
+.MODEL D_6V3_0  D( IS=10F N=1.24 BV=6.3 IBV=1M CJ0 = 1P TT = 10p )
+.MODEL D_3V9_0  D( IS=10F N=1.24 BV=3.9 IBV=1M CJ0 = 1P TT = 10p )
+.MODEL D_4V7_0  D( IS=10F N=1.24 BV=4.7 IBV=1M CJ0 = 1P TT = 10p )
+.MODEL Q_PNP_0  PNP( IS=10F NF=1.04 NR=1.04 BF=50 CJC=1P CJE=2P
++      TF=10P TR=1N VAF=45)
+.MODEL Q_NPN_0  NPN( IS=10F NF=1.04 NR=1.04 BF=100 CJC=1P CJE=2P
++       TF=10P TR=1N VAF=90)
+.MODEL Q_NPN_1  NPN( IS=10F NF=1.04 NR=1.04 BF=100 CJC=1P CJE=2P
++       TF=10P TR=1N VAF=90)
+.MODEL Q_NPN_2  NPN( IS=10F NF=1.04 NR=1.04 BF=100 CJC=1P CJE=2P
++       TF=10P TR=1N VAF=90)
+.ENDS LM7915
+
+
