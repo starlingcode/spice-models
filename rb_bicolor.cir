@@ -1,5 +1,5 @@
-.include BLUE_LED.lib
-.include RED_LED.lib
+.include blue_led.cir
+.include red_led.cir
 .subckt RB_BICOLOR 1 2
 D1 1 2 BLUE_LED
 D2 2 1 RED_LED
